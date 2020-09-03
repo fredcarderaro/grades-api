@@ -10,19 +10,19 @@ import { gradeRouter } from './routes/gradeRouter.js';
     await db.mongoose.connect(db.url, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     });
+    console.log('MongoDB Connected');
   } catch (error) {
-    process.exit();
     console.log(error);
+    process.exit();
   }
 })();
 
 const app = express();
-app.use(gradeRouter);
 
 //define o dominio de origem para consumo do servico
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
@@ -30,8 +30,11 @@ app.use(
   })
 );
 
+app.use(gradeRouter);
 app.get('/', (req, res) => {
   res.send('API em execucao');
 });
 
-app.listen(process.env.PORT || 8081, () => {});
+app.listen(process.env.PORT || 8081, () => {
+  console.log('API em execucao');
+});
