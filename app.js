@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 
 import { db } from './models/index.js';
+import { gradeRouter } from './routes/gradeRouter.js';
 
 (async () => {
   try {
@@ -12,17 +13,20 @@ import { db } from './models/index.js';
     });
   } catch (error) {
     process.exit();
+    console.log(error);
   }
 })();
 
 const app = express();
+app.use(gradeRouter);
 
 //define o dominio de origem para consumo do servico
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: 'http://localhost:8080',
+    origin: 'http://localhost:3000',
   })
 );
 
